@@ -10,16 +10,33 @@
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
-
         var index = streams.home.length - 1;
+		var displayedIndex = index;
+		console.log(streams.home.length);
         while(index >= 0){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
           $tweet.text('@' + tweet.user + ': ' + tweet.message);
           $tweet.appendTo($body);
           index -= 1;
+		  console.log("printed streams.home[" + index + "]");
         }
-
+		
+		// now to check for updates and display
+	  	// completed initial load of tweets
+		window.setInterval( function() {
+		  // if streams.home is longer than before, there's a new tweet
+		  var newIndex = streams.home.length - 1;
+		  console.log("outside while loop");
+		  while (newIndex > displayedIndex ) {
+		      var tweet = streams.home[newIndex];
+			  var $tweet = $('<div></div>');
+			  $tweet.text('@' + tweet.user + ': ' + tweet.message);
+			  $tweet.appendTo($body);
+			  newIndex -= 1;
+			  console.log("repeater working");
+			};
+		  }, 10000);
       });
 
     </script>
