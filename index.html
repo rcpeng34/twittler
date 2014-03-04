@@ -9,6 +9,12 @@
 // note that line 10 must be modified
     $(document).ready(function(){
 
+	// begin block to update users with all users
+	for (var i = 0; i < users.length; i++){
+		$("#users").append('<br>');
+		$("#users").append(users[i]);
+	};	
+	
         var index = streams.home.length - 1;
 		var displayedIndex = 0;
 		
@@ -22,7 +28,7 @@
 			console.log("outside while loop");
 			while (newIndex > displayedIndex ) {
 				var tweet = streams.home[newIndex];
-				$('#list').append('<li>' + tweet.user + ": " + tweet.message + " at " + tweet.created_at + '</li>');
+				$('#list').append('<li>' + tweet.user + " at " + tweet.created_at + ": " + tweet.message + '</li>');
 				newIndex -= 1;
 			};
 		}, 1000);
@@ -38,11 +44,7 @@
 	<div id="header" style="background-color:#FFA500;">
 	<h1 style="margin-bottom:0;">Twittler</h1></div>
 
-	<div id="menu" style="background-color:#FFD700;height:200px;width:100px;float:left;">
-	<b>Menu</b>
-	<br>HTML<br>
-	CSS<br>
-	JavaScript</div>
+	<div id="users" style="background-color:#FFD700;height:200px;width:100px;float:left;"><b>Users</b></div>
 
 	<div id="content" style="background-color:#EEEEEE;height:200px;width:4900px;float:left;">
 	<ul id="list">
