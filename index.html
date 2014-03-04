@@ -6,39 +6,48 @@
   </head>
   <body>
     <script>
+// note that line 10 must be modified
+    $(document).ready(function(){
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
         var index = streams.home.length - 1;
-		var displayedIndex = index;
-		console.log(streams.home.length);
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-		  console.log("printed streams.home[" + index + "]");
-        }
+		var displayedIndex = 0;
 		
+		// adjust the setInterval time to lower load time
+		// begin block to update tweets		
 		// now to check for updates and display
 	  	// completed initial load of tweets
 		window.setInterval( function() {
-		  // if streams.home is longer than before, there's a new tweet
-		  var newIndex = streams.home.length - 1;
-		  console.log("outside while loop");
-		  while (newIndex > displayedIndex ) {
-		      var tweet = streams.home[newIndex];
-			  var $tweet = $('<div></div>');
-			  $tweet.text('@' + tweet.user + ': ' + tweet.message);
-			  $tweet.appendTo($body);
-			  newIndex -= 1;
-			  console.log("repeater working");
+			// if streams.home is longer than before, there's a new tweet
+			var newIndex = streams.home.length - 1;
+			console.log("outside while loop");
+			while (newIndex > displayedIndex ) {
+				var tweet = streams.home[newIndex];
+				$('#list').append('<li>' + tweet.user + ": " + tweet.message + " at " + tweet.created_at + '</li>');
+				newIndex -= 1;
 			};
-		  }, 10000);
-      });
+		}, 1000);
+    });
+	
 
+// note that $('#list').append('<li>' + streams.home[0].message + '</li>') will append the tweets to the list
     </script>
-  </body>
+
+	<div id="container" style="width:5000px">
+
+
+	<div id="header" style="background-color:#FFA500;">
+	<h1 style="margin-bottom:0;">Twittler</h1></div>
+
+	<div id="menu" style="background-color:#FFD700;height:200px;width:100px;float:left;">
+	<b>Menu</b>
+	<br>HTML<br>
+	CSS<br>
+	JavaScript</div>
+
+	<div id="content" style="background-color:#EEEEEE;height:200px;width:4900px;float:left;">
+	<ul id="list">
+	</ul>
+	</div>
+	
+	</body>
 </html>
