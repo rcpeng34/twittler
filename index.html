@@ -13,7 +13,7 @@
 	// begin block to update users with all users
 	for (var i = 0; i < users.length; i++){
 		$("#users").append('<br>');
-		$("#users").append(users[i]);
+		$("#users").append('<a ' + 'id="' + users[i] + '">' + users[i] + '</a>');
 	};	
 	
         var index = streams.home.length - 1;
@@ -52,7 +52,7 @@
 	<br>
 	<b>Stream</b>
 	<br>
-	All Users
+	<a>All Users</a>
 	</div id="test" style=">
 	<div>
 
