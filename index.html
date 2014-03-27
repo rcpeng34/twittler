@@ -7,9 +7,16 @@
   </head>
   <body>
     <script>
-// note that line 10 must be modified
+	// updateUser should call updateMessages based on user name provided
+	// updateUser should update the title with the name
+	var updateUser = function (name) {
+	  alert(name);
+	};
+	// updateMessages should clear the message list and update it
+	var updateMessages = function () {
+	};
+	
     $(document).ready(function(){
-
 	// begin block to update users with all users
 	for (var i = 0; i < users.length; i++){
 		$("#users").append('<br>');
@@ -26,7 +33,6 @@
 		window.setInterval( function() {
 			// if streams.home is longer than before, there's a new tweet
 			var newIndex = streams.home.length - 1;
-			console.log("outside while loop");
 			while (newIndex > displayedIndex ) {
 				var tweet = streams.home[newIndex];
 				var tweetTime = streams.home[newIndex]["created_at"];
@@ -35,11 +41,16 @@
 				$('#list').append('<li>' + tweetTime + " " + tweet.user + " tweeted: " + tweet.message + '</li>');
 				newIndex -= 1;
 			};
-		}, 1000);
+		}, 10000);
     });
-	
-
-// note that $('#list').append('<li>' + streams.home[0].message + '</li>') will append the tweets to the list
+/*
+NOTES
+- To Do -
+make users clickable
+update title on click
+modify stream update to run once at page load
+remove old tweets
+*/	
     </script>
 
 	<div id="container" style="width:5000px">
@@ -52,11 +63,11 @@
 	<br>
 	<b>Stream</b>
 	<br>
-	<a>All Users</a>
+	<a id = "all" onclick = "updateUser(shawndrost);">All Users</a>
 	</div id="test" style=">
 	<div>
 
-	<div id="content" style="background-color:#EEEEEE;float: right;">
+	<div id="content" style="background-color:#EEEEEE;float: left;">
 	<ul id="list">
 	</ul>
 	</div>
