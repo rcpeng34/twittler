@@ -7,20 +7,36 @@
   </head>
   <body>
     <script>
+/*
+NOTES
+- To Do -
+make users clickable
+update title on click
+modify stream update to run once at page load
+remove old tweets
+*/
+	// updateMessages should clear the message list and update it
+	var updateMessages = function (name) {
+	};
+
 	// updateUser should call updateMessages based on user name provided
 	// updateUser should update the title with the name
 	var updateUser = function (name) {
-	  alert(name);
+	  name = name || "All";
+	  // update title
+	  $("h1").text("Twittler: " + name);
+	  // update messages
+	  updateMessages(name);
 	};
-	// updateMessages should clear the message list and update it
-	var updateMessages = function () {
-	};
+	
 	
     $(document).ready(function(){
 	// begin block to update users with all users
 	for (var i = 0; i < users.length; i++){
 		$("#users").append('<br>');
-		$("#users").append('<a ' + 'id="' + users[i] + '">' + users[i] + '</a>');
+		// want tag to have form <a id = "users[i]" onclick = "updateUser("user[i]");"></a>
+		var username = users[i];
+		$("#users").append('<a id =\"' + username + '\" onclick= updateUser(' + '"' + username + '"' + ');>' + username + '</a>');
 	};	
 	
         var index = streams.home.length - 1;
@@ -42,15 +58,7 @@
 				newIndex -= 1;
 			};
 		}, 10000);
-    });
-/*
-NOTES
-- To Do -
-make users clickable
-update title on click
-modify stream update to run once at page load
-remove old tweets
-*/	
+    });	
     </script>
 
 	<div id="container" style="width:5000px">
@@ -63,7 +71,7 @@ remove old tweets
 	<br>
 	<b>Stream</b>
 	<br>
-	<a id = "all" onclick = "updateUser(shawndrost);">All Users</a>
+	<a id = "all" onclick = "updateUser();">All</a>
 	</div id="test" style=">
 	<div>
 
