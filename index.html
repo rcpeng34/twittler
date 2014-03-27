@@ -29,15 +29,19 @@ remove old tweets
 	  updateMessages(name);
 	};
 	
-	
     $(document).ready(function(){
 	// begin block to update users with all users
 	for (var i = 0; i < users.length; i++){
-		$("#users").append('<br>');
-		// want tag to have form <a id = "users[i]" onclick = "updateUser("user[i]");"></a>
+		$('#users').append('<br>');
 		var username = users[i];
-		$("#users").append('<a id =\"' + username + '\" onclick= updateUser(' + '"' + username + '"' + ');>' + username + '</a>');
+		console.log(username);
+		var element = '<a id = "' + username + '">' + username + '</a>';
+		$('#users').append(element);
+		$('#'+username).on('click', function () {
+				updateUser($(this).text());
+			});
 	};	
+
 	
         var index = streams.home.length - 1;
 		var displayedIndex = 0;
@@ -64,7 +68,7 @@ remove old tweets
 	<div id="container" style="width:5000px">
 
 	<div id="header" style="background-color:#FFA700;width:500px;">
-	<h1 style="margin-bottom:0;">Twittler: All Users</h1>
+	<h1 style="margin-bottom:0;">Twittler: All</h1>
 	</div>
 
 	<div id="users" style="background-color:#FFA700;width:100px;float: left;">
