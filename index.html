@@ -10,21 +10,59 @@
 /*
 NOTES
 - To Do -
-make users clickable
-update title on click
 modify stream update to run once at page load
 remove old tweets
 */
 	// updateMessages should clear the message list and update it
-	var updateMessages = function (name) {
+	var updateMessages = function (name, display) {
+		// check if displayed value is provided
+		// if not, it is new page load or new user selected
+		if (!display) {
+			display = 0;
+			// remove all existing tweets
+			$('li').remove();
+		};
+		
+		// creat a var to return what was displayed to
+		var displayedTo = display;
+		
+		if (name === 'All') {
+			// display only 6 tweets at a time
+			for (var i = display; i < display + 6 && i < streams.home.length; i++) {
+				// check if there is already 6 tweets, if yes, remove 1
+				if (i > 6) {
+					$('#list').find(':first-child').remove();
+				};
+				var tweet = streams.home[i];
+				var tweetTime = tweet['created_at'];
+				// change tweetTime to a human format ie x min ago
+				tweetTime = moment(tweetTime).fromNow();
+				$('#list').append('<li>' + tweetTime + ' ' + tweet.user + ' tweeted: ' + tweet.message + '</li>');
+				displayedTo = i;
+			};
+		} else {
+			// use streams.users and display all messages
+			for (var i = display; i < display + 6 && i < streams.users['' + name].length; i++) {
+				if (i > 6) {
+					$('#list').find(':first-child').remove();
+				};
+				var tweet = streams.users[name+''][i];
+				var tweetTime = tweet['created_at'];
+				tweetTime = moment(tweetTime).fromNow();
+				$('#list').append('<li>' + tweetTime + ' ' + tweet.user + ' tweeted: ' + tweet.message + '</li>');
+				displayedTo = i;
+			};	
+		};
+		return displayedTo;
 	};
 
 	// updateUser should call updateMessages based on user name provided
 	// updateUser should update the title with the name
 	var updateUser = function (name) {
-	  name = name || "All";
+	  name = name || 'All';
 	  // update title
-	  $("h1").text("Twittler: " + name);
+	  $('h1').text('Twittler: ' + name);
+	  $('h1').attr('id', name);
 	  // update messages
 	  updateMessages(name);
 	};
@@ -34,55 +72,54 @@ remove old tweets
 	for (var i = 0; i < users.length; i++){
 		$('#users').append('<br>');
 		var username = users[i];
-		console.log(username);
 		var element = '<a id = "' + username + '">' + username + '</a>';
 		$('#users').append(element);
 		$('#'+username).on('click', function () {
 				updateUser($(this).text());
+				// reset displayedIndex on that user
+				displayedIndex = 0;
 			});
 	};	
-
+	// since All is not a user list, add a listener to #All
+	$('#All').on('click', function() { 
+			updateUser();
+		});
 	
-        var index = streams.home.length - 1;
 		var displayedIndex = 0;
+		// initial load of tweets
+		updateUser();
 		
-		// adjust the setInterval time to lower load time
-		// begin block to update tweets		
-		// now to check for updates and display
-	  	// completed initial load of tweets
-		window.setInterval( function() {
-			// if streams.home is longer than before, there's a new tweet
-			var newIndex = streams.home.length - 1;
-			while (newIndex > displayedIndex ) {
-				var tweet = streams.home[newIndex];
-				var tweetTime = streams.home[newIndex]["created_at"];
-				// change tweetTime to a human format ie x min ago
-				tweetTime = moment(tweetTime).fromNow();
-				$('#list').append('<li>' + tweetTime + " " + tweet.user + " tweeted: " + tweet.message + '</li>');
-				newIndex -= 1;
+		// check for updates
+		window.setInterval( function () {
+			// check for new messages to display
+			var newindex = updateMessages( $('h1').attr('id') + '', displayedIndex);
+			// if newindex is > displayed Index, update and +1 to get what to display next time
+			// if new index is the same, that means there was nothing new and don't increment
+			if (newindex !== displayedIndex) {
+				displayedIndex = newindex + 1;
 			};
-		}, 10000);
+			console.log(displayedIndex);
+		}, 1000);
+
     });	
     </script>
 
 	<div id="container" style="width:5000px">
 
-	<div id="header" style="background-color:#FFA700;width:500px;">
-	<h1 style="margin-bottom:0;">Twittler: All</h1>
-	</div>
+		<div id="header" style="background-color:#FFA700;width:800px; height:70px; position: fixed; left: 10px;">
+			<h1 style="margin-bottom:0;">Twittler: All</h1>
+		</div>
 
-	<div id="users" style="background-color:#FFA700;width:100px;float: left;">
-	<br>
-	<b>Stream</b>
-	<br>
-	<a id = "all" onclick = "updateUser();">All</a>
-	</div id="test" style=">
-	<div>
+		<div id="users" style="background-color:#FFA700; width:100px; position:fixed; left: 10px; top: 78px">
+			<br>
+			<b>Stream</b>
+			<br>
+			<a id = "All">All</a>
+		</div>
 
-	<div id="content" style="background-color:#EEEEEE;float: left;">
-	<ul id="list">
-	</ul>
+		<div id="content" style="background-color:#ffffff; position: fixed; left: 110px; top: 80px">
+			<ul id="list"></ul>
+		</div>
 	</div>
-	
 	</body>
 </html>
